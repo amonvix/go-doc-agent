@@ -17,17 +17,48 @@ class ReadmeGenerator:
         prompt = f"""
 You are a senior Go engineer and technical writer.
 
-Based on the following Go code, generate:
-1. A concise topic name.
-2. A list of key concepts covered (bullet points).
-3. A short purpose explanation.
-4. Technical notes, caveats, or best practices.
+Your task is to analyze the following Go code and generate content to fill a predefined README template.
 
-Guidelines:
-- Be concise and technical.
-- Avoid tutorial tone.
-- Do NOT include code blocks.
-- Output plain text only.
+IMPORTANT RULES:
+- You MUST NOT create headings, titles, or section names.
+- You MUST NOT repeat the topic name inside the text.
+- You MUST NOT write phrases like "This example demonstrates" or similar.
+- You MUST NOT explain what the code does line by line.
+- You MUST NOT use markdown headings.
+- You MUST NOT include code blocks.
+- You MUST write only the raw content for each field.
+
+You will generate exactly 4 sections:
+
+1. TOPIC_NAME  
+A short, technical, descriptive title (no punctuation, no markdown, no extra words).
+
+2. CONCEPTS  
+A bullet list of key technical concepts covered (each line starting with "- ").
+
+3. PURPOSE  
+A concise technical explanation of the intent of the code. No tutorial tone. No didactic language.
+
+4. NOTES  
+Technical notes, caveats, or best practices relevant to this code. Bullet points. No generic statements.
+
+Output format MUST be exactly:
+
+TOPIC_NAME:
+<text>
+
+CONCEPTS:
+- item 1
+- item 2
+
+PURPOSE:
+<text>
+
+NOTES:
+- item 1
+- item 2
+
+Do not add anything outside this structure.
 
 Go code:
 {go_code}

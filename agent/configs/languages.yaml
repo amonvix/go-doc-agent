@@ -1,0 +1,17 @@
+python:
+  file_extension: .py
+  runner: python3
+  formatter: black
+  linter: flake8
+
+go:
+  file_extension: .go
+  runner: go run
+  formatter: gofmt
+  linter: golangci-lint
+
+javascript:
+  file_extension: .js
+  runner: node
+  formatter: prettier
+  linter: eslint

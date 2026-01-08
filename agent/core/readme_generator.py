@@ -1,43 +1,52 @@
+import os
 from pathlib import Path
+from typing import Dict
 
 from openai import OpenAI
 
 
 class ReadmeGenerator:
     def __init__(self, template_path: str):
+        self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
         self.template_path = Path(template_path)
-        self.client = OpenAI()
+        self.template = self._load_template()
 
+    def _load_template(self) -> str:
         if not self.template_path.exists():
-            raise FileNotFoundError(f"README template not found: {template_path}")
+            raise FileNotFoundError(f"README template not found: {self.template_path}")
+        return self.template_path.read_text(encoding="utf-8")
 
-        self.template = self.template_path.read_text(encoding="utf-8")
-
-    def generate_sections(self, go_code: str) -> dict:
+    def generate_sections(self, go_code: str) -> Dict[str, str]:
         prompt = f"""
 You are a senior Go engineer and technical writer.
 
 Your task is to analyze the following Go code and generate content to fill a predefined README template.
 
-IMPORTANT RULES:
-- You MUST NOT create headings, titles, or section names.
-- You MUST NOT repeat the topic name inside the text.
-- You MUST NOT write phrases like "This example demonstrates" or similar.
-- You MUST NOT explain what the code does line by line.
+IMPORTANT RULES (STRICT - MUST FOLLOW):
+- You MUST NOT use the word "example" anywhere.
+- You MUST NOT use teaching, tutorial, or explanatory tone.
+- You MUST NOT start sentences with "This example", "This code", "This program", or similar.
+- You MUST write in a neutral, professional, production documentation tone.
+- You MUST NOT explain concepts for learning purposes.
+- You MUST NOT describe what the code does step by step.
 - You MUST NOT use markdown headings.
 - You MUST NOT include code blocks.
-- You MUST write only the raw content for each field.
+- You MUST NOT repeat the topic name inside the text.
+- PURPOSE must start directly with the technical intent, not with introductory phrases.
+- Output MUST follow the exact format. If you break the format, the output is invalid.
+
+If you violate any rule, regenerate the output internally before returning.
 
 You will generate exactly 4 sections:
 
 1. TOPIC_NAME  
-A short, technical, descriptive title (no punctuation, no markdown, no extra words).
+A short, technical, properly capitalized title using title case. Use correct technical formatting (e.g. "8-bit", "Go").
 
 2. CONCEPTS  
 A bullet list of key technical concepts covered (each line starting with "- ").
 
 3. PURPOSE  
-A concise technical explanation of the intent of the code. No tutorial tone. No didactic language.
+Describe the technical intent of the code in an impersonal, documentation-style tone. Do not use teaching language. Do not use "illustrate", "demonstrate", or similar verbs.
 
 4. NOTES  
 Technical notes, caveats, or best practices relevant to this code. Bullet points. No generic statements.
@@ -89,14 +98,17 @@ Go code:
                 current_key = "topic_name"
                 buffer = []
                 continue
+
             if line.lower().startswith("concept"):
                 current_key = "concepts_list"
                 buffer = []
                 continue
+
             if line.lower().startswith("purpose"):
                 current_key = "purpose_text"
                 buffer = []
                 continue
+
             if line.lower().startswith("notes"):
                 current_key = "notes_text"
                 buffer = []
@@ -108,7 +120,7 @@ Go code:
 
         return sections
 
-    def build_readme(self, sections: dict) -> str:
+    def build_readme(self, sections: Dict[str, str]) -> str:
         readme = self.template
         readme = readme.replace("{{topic_name}}", sections["topic_name"])
         readme = readme.replace("{{concepts_list}}", sections["concepts_list"])

@@ -19,10 +19,10 @@ This project is part of a real-world automation initiative focused on AI-assiste
 
 ## 🧠 How it works (high level)
 
-1. Directory scanner locates Go files  
-2. Each file is sent to the AI engine with a technical documentation prompt  
-3. The AI returns the commented version  
-4. The agent writes the result back to disk  
+1. Directory scanner locates Go files
+2. Each file is sent to the AI engine with a technical documentation prompt
+3. The AI returns the commented version
+4. The agent writes the result back to disk
 
 ## 🛠 Tech Stack
 
@@ -41,6 +41,14 @@ This project is part of a real-world automation initiative focused on AI-assiste
 ## ⚠️ Disclaimer
 
 This tool modifies source files. Always use version control.
+
+## ⚙️ How to run
+
+# python3 main.py --path ~/.project_location --readme
+
+# python3 main.py --path ~/.project_location --no-readme
+
+# python3 main.py --path ~/.project_location --dry-run
 
 ---
 

@@ -1,4 +1,4 @@
-You are a senior Go software engineer with experience in production systems, clean architecture, and professional documentation.
+You are a senior Go software engineer writing production-grade documentation for a real-world codebase.
 
 Your task is to add high-quality, professional comments to the following Go code.
 
@@ -19,6 +19,14 @@ Guidelines:
 - Do NOT add unnecessary or redundant comments.
 - Return only valid Go code. Do NOT wrap the output in Markdown, code blocks, or backticks.
 - Write in clear, professional, production-grade English.
+
+STRICT RULES:
+
+- You MUST NOT use the words "demonstrates", "example", "shows", or "sample".
+- You MUST NOT write teaching, tutorial, or explanatory comments.
+- All comments must be written as if this code is part of a production system.
+- If no meaningful comment can be added, return the code unchanged.
+- Package comments must describe responsibility and scope, not usage.
 
 The goal is to make this code understandable to another engineer joining the project.
 

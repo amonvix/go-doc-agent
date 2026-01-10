@@ -1,11 +1,11 @@
 # go-doc-agent 🧠⚙️
 
-**go-doc-agent** is an AI-powered agent that automatically documents Go source code using professional GoDoc-style comments and generates clean README files.
+**go-doc-agent** is an AI-powered agent that automatically programs documents source code using professional comments and generates clean README files.
 
 ## 🚀 What it does
 
-- Scans a Go project directory
-- Reads `.go` source files
+- Scans a project directory
+- Reads programs source files
 - Uses AI to generate clean, professional comments in English
 - Injects comments directly into the code
 - (Coming soon) Generates README.md based on code structure and comments
@@ -13,7 +13,7 @@
 ## 🎯 Why this exists
 
 Documentation is often neglected, inconsistent, or outdated.  
-`go-doc-agent` was created to automate documentation in a clean, professional, and scalable way.
+`doc-agent` was created to automate documentation in a clean, professional, and scalable way.
 
 This project is part of a real-world automation initiative focused on AI-assisted software engineering.
 
@@ -28,13 +28,13 @@ This project is part of a real-world automation initiative focused on AI-assiste
 
 - Python 3.10+
 - OpenAI API (or local LLM in future)
-- Go (target language)
+- Root program folder (target language)
 
 ## 📌 Roadmap
 
 - [x] Go file scanner
-- [ ] AI code commenter
-- [ ] README generator
+- [X] AI code commenter
+- [x] README generator
 - [ ] Directory watcher (auto mode)
 - [ ] CLI interface
 

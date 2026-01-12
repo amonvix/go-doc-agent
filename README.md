@@ -96,7 +96,7 @@ roadmap/            # Planned features (e.g. Python, README generator)
 - **Single responsibility** – do one thing well
 - **Native tooling** – use Go AST, not regex
 - **Zero configuration** – no setup ceremony
-- **Product mindset** – built to be raised, not simple studied
+- **Product mindset** – built to be raised, not just studied
 
 ---
 

@@ -1,4 +1,4 @@
-package internal
+package comment
 
 import (
 	"go/ast"

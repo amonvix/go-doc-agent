@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/amonvix/go-doc-agent/internal"
+	internal "github.com/amonvix/go-doc-agent/internal/comment"
 )
+
 // main TODO: add description
 func main() {
 	if len(os.Args) < 2 {

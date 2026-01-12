@@ -1,0 +1,7 @@
+go:
+  file_extension: .go
+  runner: go run
+  formatter: gofmt
+  linter: golangci-lint
+
+

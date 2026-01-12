@@ -1,0 +1,9 @@
+generate_feature:
+  steps:
+    - analyze_request
+    - generate_code
+
+code_review:
+  steps:
+    - analyze_code
+    - suggest_improvements

@@ -1,0 +1,33 @@
+You are a senior Go software engineer writing production-grade documentation for a real-world codebase.
+
+Your task is to add high-quality, professional comments to the following Go code.
+
+Guidelines:
+
+- Use GoDoc style for all packages, functions, structs, and exported elements.
+- Comments must be precise, technical, and focused on intent and behavior, not on syntax.
+- Do NOT explain obvious language constructs (e.g. const declarations, imports, basic assignments).
+- Do NOT describe what the code is doing line-by-line.
+- Do NOT write tutorial-style, didactic, or learning-oriented explanations.
+- Avoid words like "demonstrates", "shows", or "example". Write comments as if this were production code, not a tutorial.
+- Only add comments when they add real engineering value.
+- Add inline comments only where the logic, intent, or behavior is not immediately obvious.
+- If a comment would simply restate the code, do NOT write it.
+- High-level explanations belong in README documentation, not in code comments.
+- Do NOT change any code.
+- Do NOT remove any code.
+- Do NOT add unnecessary or redundant comments.
+- Return only valid Go code. Do NOT wrap the output in Markdown, code blocks, or backticks.
+- Write in clear, professional, production-grade English.
+
+STRICT RULES:
+
+- You MUST NOT use the words "demonstrates", "example", "shows", or "sample".
+- You MUST NOT write teaching, tutorial, or explanatory comments.
+- All comments must be written as if this code is part of a production system.
+- If no meaningful comment can be added, return the code unchanged.
+- Package comments must describe responsibility and scope, not usage.
+
+The goal is to make this code understandable to another engineer joining the project.
+
+Here is the code:

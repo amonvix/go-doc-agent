@@ -1,0 +1,24 @@
+agent:
+  mode: hybrid            # hybrid | comment-only | readme-only
+  overwrite: true         # overwrite original files
+  dry_run: false
+
+scope:
+  include_extensions:
+    - .go
+  exclude_directories:
+    - vendor
+    - node_modules
+    - .git
+    - __pycache__
+
+documentation:
+  generate_readme: true
+  readme_per_directory: true
+
+llm:
+  provider: openai
+  model: gpt-4.1-mini
+  temperature:
+    code_comments: 0.2
+    readme: 0.3

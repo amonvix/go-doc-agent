@@ -1,10 +1,12 @@
-package main
+package commentingo
 
 import (
-	"fmt"
-	"os"
+    "fmt"
+    "os"
 
-	internal "github.com/amonvix/go-doc-agent/internal/comment"
+    "github.com/amonvix/go-doc-agent/internal/language/go/parser"
+    "github.com/amonvix/go-doc-agent/internal/generator"
+	"github.com/amonvix/go-doc-agent/internal/io"
 )
 
 // main TODO: add description
@@ -16,23 +18,24 @@ func main() {
 
 	filePath := os.Args[1]
 
-	astFile, fset, err := internal.ParseFile(filePath)
+	astFile, fset, err := parser.ParseFile(filePath)
 	if err != nil {
-		fmt.Println("Error parsing file:", err)
-		os.Exit(1)
-	}
+    	fmt.Println("Error parsing file:", err)
+    os.Exit(1)
+}
 
-	comments, err := internal.GenerateComments(astFile)
-	if err != nil {
-		fmt.Println("Error generating comments:", err)
-		os.Exit(1)
-	}
 
-	err = internal.WriteComments(filePath, fset, astFile, comments)
+	comments, err := generator.GenerateComments(astFile)
 	if err != nil {
-		fmt.Println("Error writing comments:", err)
-		os.Exit(1)
-	}
+    	fmt.Println("Error generating comments:", err)
+    	os.Exit(1)
+}
+
+	err = io.WriteComments(filePath, fset, astFile, comments)
+	if err != nil {
+    	fmt.Println("Error writing comments:", err)
+    	os.Exit(1)
+}
 
 	fmt.Println("Comments added successfully.")
 }

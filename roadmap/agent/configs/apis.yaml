@@ -1,0 +1,22 @@
+openai:
+  type: llm
+  base_url: https://api.openai.com/v1
+  env_key: OPENAI_API_KEY
+  models:
+    - gpt-4.1
+    - gpt-4o-mini
+
+huggingface:
+  type: llm
+  base_url: https://api-inference.huggingface.co
+  env_key: HUGGINGFACE_API_KEY
+  models:
+    - mistral
+    - llama
+
+ollama:
+  type: local_llm
+  base_url: http://localhost:11434
+  models:
+    - llama3
+    - codellama

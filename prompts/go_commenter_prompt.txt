@@ -1,0 +1,5 @@
+Generate a clear, concise Go doc comment for the following function:
+
+{{function_signature}}
+
+The comment must follow GoDoc conventions and explain what the function does.

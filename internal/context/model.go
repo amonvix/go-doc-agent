@@ -1,9 +1,19 @@
 package context
 
-import "go/ast"
+type TypeKind string
 
-type Function struct {
-	Name   string
-	HasDoc bool
-	Node   *ast.FuncDecl
+const (
+	TypePrimitive TypeKind = "primitive"
+	TypeStruct    TypeKind = "struct"
+	TypePointer   TypeKind = "pointer"
+	TypeSlice     TypeKind = "slice"
+	TypeMap       TypeKind = "map"
+	TypeInterface TypeKind = "interface"
+	TypeExternal  TypeKind = "external"
+	TypeUnknown   TypeKind = "unknown"
+)
+
+type TypeInfo struct {
+	Name string
+	Kind TypeKind
 }

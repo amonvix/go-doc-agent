@@ -1,23 +1,43 @@
 package generator
 
-import "go/ast"
+import (
+	"bytes"
+	"path/filepath"
+	"text/template"
 
-func GenerateComments(file *ast.File) (map[ast.Node]string, error) {
-	comments := make(map[ast.Node]string)
+	"github.com/amonvix/go-doc-agent/internal/context"
+)
 
-	ast.Inspect(file, func(n ast.Node) bool {
-		fn, ok := n.(*ast.FuncDecl)
-		if !ok {
-			return true
+func GenerateComments(funcs []context.Function) (map[string]string, error) {
+
+	tplPath := filepath.Join(
+		"templates",
+		"go",
+		"comment.tmpl",
+	)
+
+	tpl, err := template.ParseFiles(tplPath)
+	if err != nil {
+		return nil, err
+	}
+
+	result := make(map[string]string)
+
+	for _, fn := range funcs {
+
+		if fn.HasDoc {
+			continue
 		}
 
-		if fn.Doc == nil {
-			comments[fn] =
-				"// " + fn.Name.Name + " TODO: add description"
+		var buf bytes.Buffer
+
+		err := tpl.Execute(&buf, fn)
+		if err != nil {
+			return nil, err
 		}
 
-		return true
-	})
+		result[fn.Name] = buf.String()
+	}
 
-	return comments, nil
+	return result, nil
 }

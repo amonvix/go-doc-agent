@@ -16,14 +16,17 @@ func ExtractFunctions(file *ast.File) []context.Function {
 		}
 
 		f := context.Function{
-			Name:   fn.Name.Name,
-			HasDoc: fn.Doc != nil,
+			Name: fn.Name.Name,
+		}
+
+		if fn.Doc != nil {
+			f.Description = fn.Doc.Text()
 		}
 
 		// parameters
 		if fn.Type.Params != nil {
 			for _, p := range fn.Type.Params.List {
-				typ := exprToString(p.Type)
+				typ := parseType(p.Type)
 
 				for _, name := range p.Names {
 					f.Params = append(f.Params, context.Param{
@@ -38,7 +41,7 @@ func ExtractFunctions(file *ast.File) []context.Function {
 		if fn.Type.Results != nil {
 			for _, r := range fn.Type.Results.List {
 				f.Returns = append(f.Returns, context.Return{
-					Type: exprToString(r.Type),
+					Type: parseType(r.Type),
 				})
 			}
 		}

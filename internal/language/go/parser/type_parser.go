@@ -3,7 +3,7 @@ package parser
 import (
 	"go/ast"
 
-	"go-doc-agent/internal/context"
+	"github.com/amonvix/go-doc-agent/internal/context"
 )
 
 func parseType(expr ast.Expr) context.TypeInfo {

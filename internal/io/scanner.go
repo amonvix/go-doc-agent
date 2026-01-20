@@ -6,6 +6,14 @@ import (
 	"path/filepath"
 )
 
+// var ignoredDirs = map[string]bool{
+// 	".git":          true,
+// 	"vendor":        true,
+// 	"node_modules":  true,
+// 	".idea":         true,
+// 	".vscode":       true,
+// }
+
 type SourceFile struct {
 	Path     string
 	Filename string

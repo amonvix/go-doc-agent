@@ -2,31 +2,40 @@ package generator
 
 import (
 	"bytes"
+	"fmt"
+	"path/filepath"
 	"text/template"
 
 	"github.com/amonvix/go-doc-agent/internal/context"
 )
 
 func GenerateComments(funcs []context.Function) (map[string]string, error) {
-	result := make(map[string]string)
+	results := make(map[string]string)
 
-	tpl, err := template.ParseFiles("templates/go/go_comment.tmpl")
+	tmplPath := filepath.Join(
+		"templates",
+		"comments",
+		"function.tmpl",
+	)
+
+	tmpl, err := template.ParseFiles(tmplPath)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("load function template: %w", err)
 	}
 
 	for _, fn := range funcs {
-		if fn.HasDoc {
-			continue
-		}
-
 		var buf bytes.Buffer
-		if err := tpl.Execute(&buf, fn); err != nil {
-			return nil, err
+
+		if err := tmpl.Execute(&buf, fn); err != nil {
+			return nil, fmt.Errorf(
+				"generate comment for %s: %w",
+				fn.Name,
+				err,
+			)
 		}
 
-		result[fn.Name] = buf.String()
+		results[fn.Name] = buf.String()
 	}
 
-	return result, nil
+	return results, nil
 }

@@ -30,6 +30,8 @@ type Function struct {
 	Name        string
 	Description string
 
+	FilePath string
+
 	Params  []Param
 	Returns []Return
 }
@@ -51,4 +53,13 @@ type Param struct {
 type Return struct {
 	Type        TypeInfo
 	Description string
+}
+
+// ---------------------------
+// Project model
+// ---------------------------
+
+type Project struct {
+	Path      string
+	Functions []Function
 }

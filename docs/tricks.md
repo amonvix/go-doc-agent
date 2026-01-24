@@ -12,7 +12,7 @@ ___________________________________________________
 | Where do I save this?        | Writer           |
 ---------------------------------------------------
 
-One rule that no one tells you and is the core of the Semantic Analizer
+One rule that no one tells you and is the core of the Semantic Analyzer
 If function name starts with:
 - Get     → returns something
 - Set     → modifies something

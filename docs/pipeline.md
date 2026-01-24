@@ -13,7 +13,7 @@ parser
 ↓
 extractor
 ↓
-Semantic Analizer
+Semantic Analyzer
 ↓
 generator
 ↓

@@ -1,4 +1,4 @@
-package main
+package sample
 
 // Sum executes the core logic of this function.
 //

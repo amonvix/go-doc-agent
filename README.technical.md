@@ -57,44 +57,69 @@ Generated Output
 
 ## 📂 Project Structure
 
-go-doc-agent/
-│
-├── cmd/
-│ └── commentingo/
-│ └── main.go
-│
-├── internal/
-│ ├── agent/
-│ │ └── orchestrator.go
-│ │
-│ ├── io/
-│ │ ├── scanner.go
-│ │ └── file.go
-│ │
-│ ├── language/
-│ │ ├── detect.go
-│ │ └── registry.go
-│ │
-│ ├── context/
-│ │ ├── project.go
-│ │ ├── file.go
-│ │ ├── function.go
-│ │ └── symbol.go
-│ │
-│ ├── parser/
-│ │ └── interface.go
-│ │
-│ ├── writer/
-│ │ └── interface.go
-│ │
-│ └── language/
-│ └── go/
-│ └── parser/
-│ └── ast_parser.go
-│
-└── README.md
+```text
+├── README.md
+├── README.technical.md
+├── cmd
+│   └── commentingo
+│       └── main.go
+├── docs
+│   ├── README.md
+│   ├── explanation.md
+│   ├── pipeline.md
+│   └── tricks.md
+├── examples
+│   ├── api
+│   │   ├── handler.go
+│   │   ├── repository.go
+│   │   └── service.go
+│   ├── mixed.go
+│   ├── no_comments.go
+│   ├── readme
+│   │   ├── README.generated.md
+│   │   └── project-structure.txt
+│   ├── sample
+│   │   ├── input.go
+│   │   └── output.go
+│   └── sample.go
+├── go.mod
+├── internal
+│   ├── context
+│   │   ├── builder
+│   │   │   └── builder.go
+│   │   ├── extractor.go
+│   │   ├── model.go
+│   │   └── project_utils.go
+│   ├── generator
+│   │   ├── commenter.go
+│   │   └── readme_generator.go
+│   ├── io
+│   │   ├── readme_writer.go
+│   │   ├── scanner.go
+│   │   └── writer.go
+│   └── language
+│       ├── detector.go
+│       └── go
+│           └── parser
+├── prompts
+│   └── go_comment_prompt.txt
+└── templates
+    ├── comments
+    │   ├── default.tmpl
+    │   ├── function.tmpl
+    │   ├── interface.tmpl
+    │   ├── package.tmpl
+    │   └── struct.tmpl
+    ├── config
+    │   └── default.yaml
+    └── readme
+        ├── example.tmpl
+        ├── footer.tmpl
+        ├── header.tmpl
+        ├── installation.tmpl
+        └── usage.tmpl
 
-
+```
 ---
 
 ## 🔍 Core Components

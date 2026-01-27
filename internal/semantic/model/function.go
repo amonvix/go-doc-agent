@@ -14,4 +14,11 @@ type Function struct {
 
 	IsMethod bool
 	IsPure   bool
+
+	Role FunctionRole
+	Layer Layer
+	
+	IsEntryPoint   bool
+	IsTerminal     bool
+	IsOrchestrator bool
 }

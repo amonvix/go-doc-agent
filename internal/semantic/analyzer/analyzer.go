@@ -1,14 +1,15 @@
 package analyzer
 
-import "github.com/amonvix/go-doc-agent/internal/semantic/model"
+import "github.com/amonvix/go-doc-agent/internal/semantic"
 
-// Analyze walks through the semantic IR and enriches it with meaning.
-// This layer does not understand syntax or language-specific constructs.
-// It operates only on language-agnostic semantic models.
-func Analyze(project *model.Project) {
-
+func Analyze(project *semantic.Project) {
 	for i := range project.Functions {
-		project.Functions[i].Role =
-			DetectFunctionRole(project.Functions[i])
+		fn := &project.Functions[i]
+
+		DetectFunctionRole(fn)
+		DetectFunctionLayer(fn)
+		DetectDependencies(fn)
+		DetectSideEffects(fn)
+		DetectEntrypoint(fn)
 	}
 }

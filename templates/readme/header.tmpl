@@ -1,0 +1,11 @@
+{{ define "header.tmpl" }}
+# {{ .Title }}
+
+{{ template "overview.tmpl" . }}
+
+{{ template "installation.tmpl" . }}
+
+{{ template "usage.tmpl" . }}
+
+{{ template "footer.tmpl" . }}
+{{ end }}

@@ -5,6 +5,7 @@ import (
 	"go/parser"
 	"go/printer"
 	"go/token"
+	"log"
 	"os"
 )
 
@@ -12,6 +13,7 @@ func WriteComments(
 	filePath string,
 	comments map[string]string,
 ) error {
+	log.Println("[writer] writing outputs")
 
 	fset := token.NewFileSet()
 

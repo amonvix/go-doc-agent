@@ -1,7 +1,8 @@
-package io
+package generator
 
 import (
 	"os"
+	"path/filepath"
 	"text/template"
 )
 
@@ -11,7 +12,8 @@ func WriteTemplate(
 	data any,
 ) error {
 
-	tmpl, err := template.ParseFiles(templatePath)
+	tmpl, err := template.New(filepath.Base(templatePath)).ParseFiles(templatePath)
+
 	if err != nil {
 		return err
 	}

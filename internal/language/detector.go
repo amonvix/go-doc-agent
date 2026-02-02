@@ -1,8 +1,13 @@
 package language
 
-import "path/filepath"
+import (
+	"log"
+	"path/filepath"
+)
 
 func Detect(path string) (string, bool) {
+	log.Printf("[pipeline] language detected: %s\n", lang)
+
 	switch filepath.Ext(path) {
 
 	case ".go":

@@ -1,6 +1,7 @@
 package io
 
 import (
+	"log"
 	"os"
 	"path/filepath"
 	"text/template"
@@ -12,6 +13,7 @@ func WriteReadme(
 	readme *generator.ReadmeDoc,
 	templatesDir string,
 ) error {
+	log.Println("[writer] writing outputs")
 
 	outputPath := "README.generated.md"
 

@@ -1,8 +1,13 @@
 package generator
 
-import "github.com/amonvix/go-doc-agent/internal/semantic"
+import (
+	"log"
+
+	"github.com/amonvix/go-doc-agent/internal/semantic"
+)
 
 func Generate(project *semantic.Project) (*DocBundle, error) {
+	log.Println("[generator] generating documentation bundle")
 
 	bundle := &DocBundle{}
 

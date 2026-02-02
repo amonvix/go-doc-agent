@@ -1,6 +1,7 @@
 package io
 
 import (
+	"log"
 	"os"
 	"path/filepath"
 	"sort"
@@ -14,6 +15,7 @@ func WriteCommentsMarkdown(
 	projectPath context.Path,
 	comments []generator.CommentDoc,
 ) error {
+	log.Println("[writer] writing outputs")
 
 	if len(comments) == 0 {
 		return nil

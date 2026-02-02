@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"go/parser"
 	"go/token"
+	"log"
 	"os"
 	"path/filepath"
 
@@ -64,6 +65,7 @@ func main() {
 		semanticProject.Functions =
 			append(semanticProject.Functions, p.Functions...)
 	}
+	log.Println("[pipeline] starting analysis")
 
 	// -----------------------------
 	// 3. Semantic analyzer

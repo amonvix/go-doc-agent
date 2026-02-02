@@ -6,20 +6,20 @@ import (
 )
 
 func Detect(path string) (string, bool) {
-	log.Printf("[pipeline] language detected: %s\n", lang)
+	var lang string
+	var ok bool
 
 	switch filepath.Ext(path) {
-
 	case ".go":
-		return "go", true
-
+		lang, ok = "go", true
 	case ".py":
-		return "python", true
-
+		lang, ok = "python", true
 	case ".js", ".ts":
-		return "javascript", true
-
+		lang, ok = "javascript", true
 	default:
-		return "", false
+		lang, ok = "", false
 	}
+
+	log.Printf("[pipeline] language detected: %s\n", lang)
+	return lang, ok
 }

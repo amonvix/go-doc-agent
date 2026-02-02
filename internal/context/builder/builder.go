@@ -1,75 +1,37 @@
 package builder
 
 import (
-	"go/parser"
-	"go/token"
 	"os"
 
 	"github.com/amonvix/go-doc-agent/internal/context"
-	"github.com/amonvix/go-doc-agent/internal/io"
-	"github.com/amonvix/go-doc-agent/internal/language"
-	goparser "github.com/amonvix/go-doc-agent/internal/language/go/parser"
+	"github.com/amonvix/go-doc-agent/internal/fs"
 )
 
-func Build(path string) (*context.Project, error) {
+func Build(path context.Path) (*context.Project, error) {
 
-	info, err := os.Stat(path)
+	info, err := os.Stat(path.String())
 	if err != nil {
 		return nil, err
 	}
 
-	var files []io.SourceFile
+	var files []fs.SourceFile
 
 	if info.IsDir() {
-		files, err = io.ScanDirectory(path)
+		files, err = fs.ScanDirectory(path.String())
 	} else {
-		file, err := io.ScanFile(path)
+		file, err := fs.ScanFile(path.String())
 		if err != nil {
 			return nil, err
 		}
-		files = []io.SourceFile{*file}
+		files = []fs.SourceFile{*file}
 	}
 
 	if err != nil {
 		return nil, err
 	}
 
-	project := &context.Project{
-		Path: path,
-	}
-
-	for _, file := range files {
-
-		lang, ok := language.Detect(file.Path)
-		if !ok {
-			continue
-		}
-
-		switch lang {
-
-		case "go":
-
-			fset := token.NewFileSet()
-
-			astFile, err := parser.ParseFile(
-				fset,
-				file.Path,
-				nil,
-				parser.ParseComments,
-			)
-			if err != nil {
-				return nil, err
-			}
-
-			functions := goparser.ExtractFunctions(astFile)
-
-			for i := range functions {
-				functions[i].FilePath = file.Path
-			}
-
-			project.Functions = append(project.Functions, functions...)
-		}
-	}
-
-	return project, nil
+	return &context.Project{
+		Path:  path.String(),
+		Files: files,
+	}, nil
 }

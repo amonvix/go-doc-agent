@@ -1,21 +1,24 @@
-# go-doc-agent — Technical Documentation
+# go-doc-agent — Technical Documentation ☕🧠
 
-This document describes the internal architecture, design decisions and execution flow of the **go-doc-agent** project.
+This document describes the internal architecture, design decisions, and execution flow of the **go-doc-agent** system.
 
-It is intended for engineers who want to understand **how the system works internally**, not just what it does.
+It is intended for engineers who want to understand **how the system works internally**, not just what it produces.
+
+If you drink coffee while reading source code, this file is for you.
 
 ---
 
 ## 🎯 Design Goals
 
-The project was designed with the following goals:
+The project was built around the following non-negotiable goals:
 
 - Avoid language-specific coupling
 - Support future multi-language expansion
-- Isolate parsing logic from output generation
+- Isolate parsing logic from documentation output
 - Prevent documentation logic from depending on AI
-- Enable deterministic, testable behavior
-- Keep the system extensible without refactoring the core
+- Enable deterministic and testable behavior
+- Keep extensibility possible without refactoring the core
+- Ensure architecture clarity even at large scale
 
 ---
 
@@ -23,20 +26,27 @@ The project was designed with the following goals:
 
 The system follows a **pipeline-based architecture**.
 
-Each stage has a single responsibility and communicates through a shared internal context model.
+Each stage:
 
-No layer is allowed to directly access another layer’s internal implementation.
+- has a single responsibility  
+- communicates only through defined models  
+- does not access internal logic of other layers  
 
-This ensures:
+No layer is allowed to shortcut the pipeline.
+
+This guarantees:
 
 - low coupling  
 - high cohesion  
-- predictable data flow  
+- predictable execution flow  
 - safe extensibility  
+- maintainable growth  
+
+In short: no spaghetti systems.
 
 ---
 
-## 🧩 High-Level Flow
+## 🧩 High-Level Execution Flow
 
 Project Path
 ↓
@@ -46,12 +56,19 @@ Language Detection
 ↓
 Language Parser (AST)
 ↓
-Unified Context Model
+Structure Extractor
+↓
+Semantic Analyzer
+↓
+Meaning Output Model
 ↓
 Writer Engine
 ↓
-Generated Output
+Generated Comments / Docs / README
 
+---
+
+Each arrow represents a strict data contract — not a function call shortcut.
 
 ---
 
@@ -90,34 +107,27 @@ Generated Output
 │   │   ├── extractor.go
 │   │   ├── model.go
 │   │   └── project_utils.go
+│   ├── semantic
+│   │   ├── analyzer
+│   │   ├── adapter
+│   │   └── model
 │   ├── generator
 │   │   ├── commenter.go
 │   │   └── readme_generator.go
 │   ├── io
-│   │   ├── readme_writer.go
 │   │   ├── scanner.go
-│   │   └── writer.go
+│   │   ├── writer.go
+│   │   └── readme_writer.go
 │   └── language
 │       ├── detector.go
 │       └── go
 │           └── parser
-├── prompts
-│   └── go_comment_prompt.txt
-└── templates
-    ├── comments
-    │   ├── default.tmpl
-    │   ├── function.tmpl
-    │   ├── interface.tmpl
-    │   ├── package.tmpl
-    │   └── struct.tmpl
-    ├── config
-    │   └── default.yaml
-    └── readme
-        ├── example.tmpl
-        ├── footer.tmpl
-        ├── header.tmpl
-        ├── installation.tmpl
-        └── usage.tmpl
+├── templates
+│   ├── comments
+│   ├── config
+│   └── readme
+└── prompts
+    └── go_comment_prompt.txt
 
 ```
 ---
@@ -130,18 +140,24 @@ Generated Output
 
 Responsible for:
 
-- walking the project directory
+- walking the project directory tree
 - identifying readable source files
 - ignoring unsupported formats
 - loading file content safely
 
-This layer has **zero knowledge of language syntax**.
+This layer has:
+
+**no AST knowledge**
+**language awareness**
+**no semantic responsibility**
+
+- It deals exclusively with filesystem operations.
 
 ---
 
 ### 2️⃣ Language Detection (`internal/language`)
 
-Each file is analyzed to determine:
+Determines for each file:
 
 - supported language
 - parser availability
@@ -165,42 +181,44 @@ Parsers implement a shared interface:
 type Parser interface {
     Parse(file File) (*context.FileContext, error)
 }
+```
 
 Each language owns:
 
-its AST logic
+- its AST logic
 
-syntax rules
+- syntax rules
 
-semantic extraction
+- language-specific construct
 
 The core system never interacts with AST directly.
 
-4️⃣ Go AST Parser
+### 4️⃣ Go AST Parser
 
 The Go implementation uses:
 
-go/parser
+- go/parser
 
-go/ast
+- go/ast
 
-go/token
+- go/token
 
-Responsibilities:
+Responsibilities include:
 
-extract functions
+- extracting functions and methods
 
-capture receivers
+- identifying receivers
 
-identify exported vs private symbols
+- detecting exported vs private symbols
 
-preserve comments
+- preserving comments
 
-map source positions
+- mapping source positions
 
 The output is normalized into the unified context model.
 
-5️⃣ Unified Context Model (internal/context)
+
+### 5️⃣ Unified Context Model (internal/context)
 
 This is the heart of the system.
 
@@ -219,99 +237,149 @@ type Function struct {
 
 Writers never care whether data came from:
 
-Go AST
+- Go AST
 
-Python AST
+- Python AST
 
-Tree-sitter
+- Tree-sitter
 
-LLM output
+- LLM output
+
+- Static analysis
 
 Only the context matters.
 
-6️⃣ Writer Layer (internal/writer)
+### 6️⃣ Semantic Analyzer (internal/semantic)
 
-Writers consume the context model and generate output:
+The semantic analyzer answers:
 
-GoDoc comments
+“What does this structure mean?”
 
-Markdown documentation
+# It determines:
 
-README files
+- architectural role (handler, service, repository…)
 
-future formats (HTML, JSON, etc.)
+- system layer (API, domain, infrastructure…)
 
-Writers never parse code.
+- dependencies (database, network, filesystem…)
 
-They only translate structured context into output.
+- intent (CRUD, orchestration, mapping…)
+
+- detected behavior flags
+
+- optional confidence score
+
+This transforms structure into meaning.
+
+### 7️⃣ Meaning Output Model
+
+The analyzer produces a normalized semantic result:
+
+Function:
+- role: repository
+- layer: persistence
+- intent: data-access
+- dependencies: database
+- behavior: CRUD
+- confidence: high
+
+This model becomes the single source of truth for all documentation output.
+
+### 8️⃣ Writer Layer (internal/generator)
+
+Writers consume semantic meaning — never source code.
+
+# They generate:
+
+- GoDoc comments
+
+- Markdown documentation
+
+- README files
+
+- future formats (HTML, JSON, diagrams)
+
+# Writers are:
+
+- language-agnostic
+
+- deterministic
+
+- output-focused
+
+They translate meaning into documentation.
 
 🤖 AI Integration (Optional)
 
 AI is treated as:
 
-a comment generator
+- a comment generator
 
-not a parser
+it is not:
 
-not a decision engine
+- not a parser
 
-The system remains functional without AI.
+- not a decision engine
 
-This prevents:
+- The system remains functional without AI.
 
-vendor lock-in
+# This prevents:
 
-non-deterministic builds
+- vendor lock-in
 
-dependency on external services
+- non-deterministic builds
+
+- dependency on external services
 
 AI is a plugin — not a foundation.
 
-🔒 Why AST-Based Parsing
+### 🔒 Why AST-Based Parsing
+
 
 Regex-based documentation tools fail because they:
 
-break on formatting
+- break on formatting
 
-cannot understand scope
+- cannot understand scope
 
-cannot identify receivers
+- cannot identify receivers
 
-misinterpret nested logic
+- misinterpret nested logic
 
-AST provides:
+AST parsing provides:
 
-syntactic correctness
+- syntactic correctness
 
-structural certainty
+- structural certainty
 
-safe refactoring support
+- safe refactoring support
 
-future-proof parsing
+- future-proof parsing
 
-🧪 Error Handling Strategy
+## 🧪 Error Handling Strategy
 
-Errors are isolated per file:
+- Errors are isolated per file
 
-one malformed file does not break the project
+- one malformed file does not break the project
 
-parsing failures are reported, not fatal
+- parsing failures are reported, not fatal
 
-partial results are allowed
+- partial results are allowed
 
-This mirrors real-world CI behavior.
+This mirrors real-world CI/CD behavior.
 
-🚀 Extending the System
+
+## 🚀 Extending the System
 
 To add a new language:
 
-Implement a parser adapter
+1. Implement a parser adapter
 
-Map AST data into the context model
+2. Map AST data into the context model
 
-Register the language
+3. Register the language
 
-Reuse all existing writers
+4. Reuse all existing writers
 
 No refactoring required.
 
@@ -321,16 +389,16 @@ go-doc-agent is not a script.
 
 It is a documentation engine designed with:
 
-strict separation of concerns
+- strict separation of concerns
 
-predictable data flow
+- deterministic execution flow
 
-extensibility as a first-class feature
+- extensibility as a first-class feature
 
-production-oriented architecture
+- production-grade architecture
 
-The system prioritizes clarity, safety and long-term maintainability.
+- semantic understanding.
 
-Documentation should not be written.
+Documentation should not be written manually.
 
-It should be derived.
+It should be derived from truth — the source code itself.

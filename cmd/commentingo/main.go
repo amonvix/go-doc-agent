@@ -1,10 +1,11 @@
 package main
 
 import (
+	"encoding/json"
+	"flag"
 	"fmt"
 	"go/parser"
 	"go/token"
-	"log"
 	"os"
 	"path/filepath"
 
@@ -18,6 +19,13 @@ import (
 )
 
 func main() {
+
+	jsonOutput := flag.Bool("json", false, "output result as JSON")
+	prettyOutput := flag.Bool("pretty", false, "pretty-print JSON output")
+	functionsView := flag.Bool("functions", false, "print function-by-function view")
+	debugMode := flag.Bool("debug", false, "enable debug logging")
+
+	flag.Parse()
 
 	if len(os.Args) < 2 {
 		fmt.Println("usage: commentingo <path>")
@@ -33,6 +41,26 @@ func main() {
 	if err != nil {
 		fmt.Println("Build error:", err)
 		os.Exit(1)
+	}
+
+	debugLog(*debugMode, "building context from path: %s", path)
+
+	if *jsonOutput {
+		var data []byte
+
+		if *prettyOutput {
+			data, err = json.MarshalIndent(ctxProject, "", "  ")
+		} else {
+			data, err = json.Marshal(ctxProject)
+		}
+
+		if err != nil {
+			debugLog(*debugMode, "json marshal error: %v", err)
+			os.Exit(1)
+		}
+
+		os.Stdout.Write(data)
+		return
 	}
 
 	// -----------------------------
@@ -55,6 +83,7 @@ func main() {
 			fmt.Println("Parser error:", err)
 			os.Exit(1)
 		}
+		debugLog(*debugMode, "parsed file: %s", file.Path)
 
 		p, err := goAdapter.Build(astFile)
 		if err != nil {
@@ -64,16 +93,29 @@ func main() {
 
 		semanticProject.Functions =
 			append(semanticProject.Functions, p.Functions...)
+
 	}
-	log.Println("[pipeline] starting analysis")
+	debugLog(*debugMode, "starting semantic analysis")
 
 	// -----------------------------
-	// 3. Semantic analyzer
+	// 3. Functions describer
+	// -----------------------------
+
+	if *functionsView {
+		for _, fn := range semanticProject.Functions {
+			printFunction(fn)
+		}
+		return
+	}
+	debugLog(*debugMode, "detected %d functions", len(semanticProject.Functions))
+
+	// -----------------------------
+	// 4. Semantic analyzer
 	// -----------------------------
 	analyzer.Analyze(semanticProject)
 
 	// -----------------------------
-	// 4. Generate documentation
+	// 5. Generate documentation
 	// -----------------------------
 	bundle, err := generator.Generate(semanticProject)
 	if err != nil {
@@ -82,7 +124,7 @@ func main() {
 	}
 
 	// -----------------------------
-	// 5. Write README
+	// 6. Write README
 	// -----------------------------
 	err = io.WriteReadme(
 		bundle.Readme,
@@ -94,7 +136,7 @@ func main() {
 	}
 
 	// -----------------------------
-	// 6. Write semantic comments
+	// 7. Write semantic comments
 	// -----------------------------
 	err = io.WriteCommentsMarkdown(
 		path,
@@ -106,4 +148,11 @@ func main() {
 	}
 
 	fmt.Println("✅ Documentation generated successfully.")
+}
+
+func debugLog(enabled bool, format string, args ...any) {
+	if !enabled {
+		return
+	}
+	fmt.Fprintf(os.Stderr, "[go-doc-agent][debug] "+format+"\n", args...)
 }

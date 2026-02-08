@@ -1,3 +1,3 @@
 module github.com/amonvix/go-doc-agent
 
-go 1.22.6
+go 1.25.6

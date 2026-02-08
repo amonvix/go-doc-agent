@@ -29,3 +29,7 @@ type Param struct {
 	Type        TypeInfo
 	Description string
 }
+
+func (t TypeInfo) String() string {
+	return t.Name
+}

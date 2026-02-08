@@ -1,13 +1,16 @@
-[![Go](https://img.shields.io/github/go-mod/go-version/amonvix/go-doc-agent)](https://golang.org)
-
 [![Build Status](https://github.com/amonvix/go-doc-agent/actions/workflows/ci.yml/badge.svg)](https://github.com/amonvix/go-doc-agent/actions/workflows/ci.yml)
 
+[![Go](https://img.shields.io/github/go-mod/go-version/amonvix/go-doc-agent)](https://golang.org)
 
-# go-doc-agent 🧠⚙️
+
+# go-doc-agent 🧠 ⚙️
+Deterministic documentation engine for generating GoDoc-style comments and structured READMEs directly from source code.
 
 **go-doc-agent** is a deterministic documentation engine that analyzes source code structure and meaning to generate consistent, high-quality technical documentation directly from the source itself.
 
 Built for engineers who care about **clarity, scalability, and systems that remain understandable as they grow**.
+
+Turn code into documentation you can trust — consistent, reproducible, and easy to maintain as your codebase grows.
 
 ---
 
@@ -24,6 +27,18 @@ A modular, language-oriented documentation system that:
 No manual comments.  
 No outdated README files.  
 No tribal knowledge.
+
+---
+
+Get started in seconds: analyze a file and generate documentation with a single command.
+
+## 🚀 Usage
+
+```bash
+go-doc-agent parse \
+  --input ./examples/simple.go \
+  --output ./docs/example.md
+```
 
 ---
 
@@ -149,16 +164,6 @@ No manual enforcement required.
 
 ---
 
-## 🚀 Usage
-
-```bash
-go-doc-agent parse \
-  --input ./examples/simple.go \
-  --output ./docs/example.md
-```
-
----
-
 ## 📌 Roadmap
 
 - [x] Project directory scanner  
@@ -167,9 +172,9 @@ go-doc-agent parse \
 - [x] Go AST parser  
 - [x] Semantic analyzer foundation  
 - [ ] Meaning output model  
-- [ ] Comment writer engine  
-- [ ] README generator  
-- [ ] CLI interface  
+- [x] Comment writer engine  
+- [x] README generator  
+- [x] CLI interface  
 - [ ] Multi-language adapters  
 - [ ] Local LLM integration  
 

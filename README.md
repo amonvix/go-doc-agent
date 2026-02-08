@@ -68,7 +68,7 @@ flowchart TD
     F --> G[Meaning Output Model]
     G --> H[Documentation Generator]
     H --> I[Comments / Docs / README]
-    ```
+    
 ```
 
 Each stage has a single responsibility and can evolve independently.

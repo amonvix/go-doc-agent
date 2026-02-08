@@ -58,20 +58,17 @@ Only after understanding these concepts does the system generate documentation.
 
 ## 🧩 High-level architecture
 
-```
-Source Code
-↓
-Language Parser (AST)
-↓
-Structure Extractor
-↓
-Semantic Analyzer
-↓
-Meaning Output Model
-↓
-Documentation Generator
-↓
-Comments / Docs / README
+```mermaid
+flowchart TD
+    A[GITHUB] --> B[GO-DOC-AGENT]
+    B --> C[Source Code]
+    C --> D[Language Parser - AST]
+    D --> E[Structure Extractor]
+    E --> F[Semantic Analyzer]
+    F --> G[Meaning Output Model]
+    G --> H[Documentation Generator]
+    H --> I[Comments / Docs / README]
+    ```
 ```
 
 Each stage has a single responsibility and can evolve independently.

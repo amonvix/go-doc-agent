@@ -1,4 +1,4 @@
-package main
+package commentingo
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"github.com/amonvix/go-doc-agent/internal/semantic"
 )
 
-func printFunction(fn semantic.Function) {
+func PrintFunction(fn semantic.Function) {
 	fmt.Println("▶ Function:", fn.Name)
 
 	if fn.File != "" {

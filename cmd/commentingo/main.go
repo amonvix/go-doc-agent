@@ -6,11 +6,14 @@ import (
 	"fmt"
 	"go/parser"
 	"go/token"
+	"log"
 	"os"
 	"path/filepath"
 
+	"github.com/amonvix/go-doc-agent/internal/commentingo"
 	"github.com/amonvix/go-doc-agent/internal/context"
 	"github.com/amonvix/go-doc-agent/internal/context/builder"
+	"github.com/amonvix/go-doc-agent/internal/fs"
 	"github.com/amonvix/go-doc-agent/internal/generator"
 	"github.com/amonvix/go-doc-agent/internal/io"
 	"github.com/amonvix/go-doc-agent/internal/language/golang"
@@ -98,12 +101,30 @@ func main() {
 	debugLog(*debugMode, "starting semantic analysis")
 
 	// -----------------------------
+	// 2.1. Search for .go files
+	// -----------------------------
+
+	root := commentingo.Parse()
+
+	files, err := fs.WalkGoFiles(root)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	grouped := fs.GroupByDir(files)
+	for dir, files := range grouped {
+		if err := generator.GenerateFolderREADME(dir, files); err != nil {
+			log.Println("error generating README for", dir, err)
+		}
+	}
+
+	// -----------------------------
 	// 3. Functions describer
 	// -----------------------------
 
 	if *functionsView {
 		for _, fn := range semanticProject.Functions {
-			printFunction(fn)
+			commentingo.PrintFunction(fn)
 		}
 		return
 	}

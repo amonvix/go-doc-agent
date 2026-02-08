@@ -1,3 +1,7 @@
+[![Go](https://img.shields.io/badge/go-1.20-blue)](https://golang.org)
+[![Build Status](https://github.com/amonvix/go-doc-agent/actions/workflows/ci.yml/badge.svg)](https://github.com/amonvix/go-doc-agent/actions/workflows/ci.yml)
+
+
 # go-doc-agent 🧠⚙️
 
 **go-doc-agent** is a deterministic documentation engine that analyzes source code structure and meaning to generate consistent, high-quality technical documentation directly from the source itself.
@@ -60,14 +64,22 @@ Only after understanding these concepts does the system generate documentation.
 
 ```mermaid
 flowchart TD
-    A[GITHUB] --> B[GO-DOC-AGENT]
-    B --> C[Source Code]
-    C --> D[Language Parser - AST]
-    D --> E[Structure Extractor]
-    E --> F[Semantic Analyzer]
-    F --> G[Meaning Output Model]
-    G --> H[Documentation Generator]
-    H --> I[Comments / Docs / README]
+  subgraph CLI
+    A[go-doc-agent CLI]
+  end
+
+  subgraph Parser
+    B[Go AST Parser]
+    C[Template Engine]
+  end
+
+  subgraph Output
+    D[Generated Docs / README]
+  end
+
+  A --> B
+  B --> C
+  C --> D
     
 ```
 
@@ -133,6 +145,16 @@ No manual enforcement required.
 - Modular internal architecture
 - CLI-oriented execution model
 - Optional LLM integration (future)
+
+---
+
+## 🚀 Usage
+
+```bash
+go-doc-agent parse \
+  --input ./examples/simple.go \
+  --output ./docs/example.md
+```
 
 ---
 

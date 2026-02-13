@@ -1,36 +1,51 @@
 [![Build Status](https://github.com/amonvix/go-doc-agent/actions/workflows/ci.yml/badge.svg)](https://github.com/amonvix/go-doc-agent/actions/workflows/ci.yml)
-
 [![Go](https://img.shields.io/github/go-mod/go-version/amonvix/go-doc-agent)](https://golang.org)
 
+# go-doc-agent 🧠⚙️
 
-# go-doc-agent 🧠 ⚙️
-Deterministic documentation engine for generating GoDoc-style comments and structured READMEs directly from source code.
+Motor determinístico de documentação para gerar comentários no estilo GoDoc e READMEs estruturados diretamente a partir do código-fonte.
 
-**go-doc-agent** is a deterministic documentation engine that analyzes source code structure and meaning to generate consistent, high-quality technical documentation directly from the source itself.
+**go-doc-agent** analisa a estrutura e o significado do código para gerar documentação técnica consistente e reproduzível diretamente a partir da fonte.
 
-Built for engineers who care about **clarity, scalability, and systems that remain understandable as they grow**.
+Feito para engenheiros que se importam com **clareza, escalabilidade e sistemas que permanecem compreensíveis à medida que crescem**.
 
-Turn code into documentation you can trust — consistent, reproducible, and easy to maintain as your codebase grows.
-
----
-
-## 🚀 What is this?
-
-A modular, language-oriented documentation system that:
-
-- Parses source code using Abstract Syntax Trees (AST)
-- Extracts structural and semantic information
-- Understands architectural intent
-- Generates professional documentation automatically
-- Keeps comments and documentation aligned with real code behavior
-
-No manual comments.  
-No outdated README files.  
-No tribal knowledge.
+Transforme código em documentação confiável — consistente, reprodutível e fácil de manter conforme o código evolui.
 
 ---
 
-Get started in seconds: analyze a file and generate documentation with a single command.
+## 🚀 O que é isso?
+
+Um sistema modular e orientado a linguagem que:
+
+- Faz parse do código-fonte usando AST (Abstract Syntax Tree)
+- Extrai informações estruturais e semânticas
+- Entende a intenção arquitetural
+- Gera documentação profissional automaticamente
+- Mantém comentários e documentação alinhados com o comportamento real do código
+
+Sem comentários manuais.  
+Sem README desatualizado.  
+Sem conhecimento tribal.
+
+---
+
+## 🎯 Por que isso existe?
+
+A maioria dos sistemas grandes não falha por código ruim.
+
+Eles falham porque:
+
+- A documentação fica obsoleta
+- O conhecimento arquitetural fica só na cabeça das pessoas
+- O código cresce mais rápido que o entendimento
+
+O **go-doc-agent** existe para fechar essa lacuna.
+
+Aqui, a documentação é tratada como um **derivado do código-fonte**, não como um artefato paralelo que inevitavelmente apodrece com o tempo.
+
+Se o código muda, a documentação muda junto.
+
+---
 
 ## 🚀 Usage
 
@@ -39,24 +54,6 @@ go-doc-agent parse \
   --input ./examples/simple.go \
   --output ./docs/example.md
 ```
-
----
-
-## 🎯 Why this exists
-
-Most large systems don’t fail because of bad code.
-
-They fail because:
-
-- Documentation becomes obsolete  
-- Architectural knowledge lives only in people  
-- Codebases grow faster than understanding  
-
-**go-doc-agent** was created to close this gap.
-
-Documentation is treated as a **derivative of the source code**, not as a parallel artifact that inevitably decays over time.
-
-If the code changes, the documentation changes with it.
 
 ---
 
@@ -96,7 +93,7 @@ flowchart TD
   A --> B
   B --> C
   C --> D
-    
+
 ```
 
 Each stage has a single responsibility and can evolve independently.
@@ -105,12 +102,12 @@ Each stage has a single responsibility and can evolve independently.
 
 ## ⚙️ Core design principles
 
-- **AST-based parsing** — no regex, no brittle text matching  
-- **Language adapters** — each language owns its syntax logic  
-- **Language-agnostic semantic core** — meaning is universal  
-- **Strict separation of concerns**  
-- **Deterministic behavior**  
-- **Offline-first execution**  
+- **AST-based parsing** — no regex, no brittle text matching
+- **Language adapters** — each language owns its syntax logic
+- **Language-agnostic semantic core** — meaning is universal
+- **Strict separation of concerns**
+- **Deterministic behavior**
+- **Offline-first execution**
 - **AI-optional architecture**
 
 AI can enhance the system — **never replace it**.
@@ -121,19 +118,19 @@ AI can enhance the system — **never replace it**.
 
 Most documentation tools are:
 
-- template-driven  
-- tightly coupled to a single language  
-- fragile at scale  
+- template-driven
+- tightly coupled to a single language
+- fragile at scale
 
 **go-doc-agent is built as an engine, not a script.**
 
 It is designed to support:
 
-- multi-language expansion  
-- multiple documentation strategies  
-- different output formats  
-- static analysis pipelines  
-- optional local or cloud AI models  
+- multi-language expansion
+- multiple documentation strategies
+- different output formats
+- static analysis pipelines
+- optional local or cloud AI models
 
 Without rewriting the core system.
 
@@ -145,10 +142,10 @@ Without rewriting the core system.
 
 Documentation becomes:
 
-- reproducible  
-- auditable  
-- version-controlled  
-- architecture-aware  
+- reproducible
+- auditable
+- version-controlled
+- architecture-aware
 
 No manual enforcement required.
 
@@ -166,17 +163,17 @@ No manual enforcement required.
 
 ## 📌 Roadmap
 
-- [x] Project directory scanner  
-- [x] Language detection layer  
-- [x] Unified context model  
-- [x] Go AST parser  
-- [x] Semantic analyzer foundation  
-- [ ] Meaning output model  
-- [x] Comment writer engine  
-- [x] README generator  
-- [x] CLI interface  
-- [ ] Multi-language adapters  
-- [ ] Local LLM integration  
+- [x] Project directory scanner
+- [x] Language detection layer
+- [x] Unified context model
+- [x] Go AST parser
+- [x] Semantic analyzer foundation
+- [ ] Meaning output model
+- [x] Comment writer engine
+- [x] README generator
+- [x] CLI interface
+- [ ] Multi-language adapters
+- [ ] Local LLM integration
 
 ---
 

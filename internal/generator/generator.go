@@ -15,7 +15,7 @@ func Generate(project *semantic.Project) (*DocBundle, error) {
 
 	for _, fn := range project.Functions {
 		bundle.Comments = append(bundle.Comments, CommentDoc{
-			FilePath: project.Name,
+			FilePath: fn.FilePath,
 			Target:   fn.Name,
 			Text:     buildFunctionSummary(fn),
 		})

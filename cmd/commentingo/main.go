@@ -9,6 +9,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/amonvix/go-doc-agent/internal/commentingo"
 	"github.com/amonvix/go-doc-agent/internal/context"
@@ -35,18 +36,21 @@ func main() {
 		os.Exit(1)
 	}
 
-	path := context.NewPath(os.Args[1])
+	path := flag.String("path", ".", "path to analyze")
+	flag.Parse()
 
 	// -----------------------------
 	// 1. Build context project
 	// -----------------------------
-	ctxProject, err := builder.Build(path)
+	p := context.NewPath(*path)
+
+	ctxProject, err := builder.Build(p)
 	if err != nil {
 		fmt.Println("Build error:", err)
 		os.Exit(1)
 	}
 
-	debugLog(*debugMode, "building context from path: %s", path)
+	debugLog(*debugMode, "building context from path: %s", *path)
 
 	if *jsonOutput {
 		var data []byte
@@ -140,10 +144,48 @@ func main() {
 	// -----------------------------
 	bundle, err := generator.Generate(semanticProject)
 	if err != nil {
-		fmt.Println("Generator error:", err)
-		os.Exit(1)
+		log.Fatal(err)
 	}
 
+	// group comments by file -> function -> text
+	commentsByFile := map[string]map[string]string{}
+
+	for _, c := range bundle.Comments {
+		if _, ok := commentsByFile[c.FilePath]; !ok {
+			commentsByFile[c.FilePath] = map[string]string{}
+		}
+		commentsByFile[c.FilePath][c.Target] = c.Text
+	}
+
+	for p := range commentsByFile {
+		log.Printf("[inject] candidate path: %q\n", p)
+	}
+
+	// guard: skip empty file paths (safety belt)
+	for filePath := range commentsByFile {
+		if strings.TrimSpace(filePath) == "" {
+			log.Println("[inject] skipping empty file path")
+			delete(commentsByFile, filePath)
+		}
+	}
+
+	// inject comments into source files via AST emitter
+	for filePath, byFn := range commentsByFile {
+		log.Printf("[inject] writing comments to %s\n", filePath)
+		if err := io.WriteComments(filePath, byFn); err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	// guard: skip empty file paths (safety belt)
+	for filePath := range commentsByFile {
+		if strings.TrimSpace(filePath) == "" {
+			log.Println("[inject] skipping empty file path")
+			delete(commentsByFile, filePath)
+		}
+	}
+
+	fmt.Println("✅ Documentation generated successfully.")
 	// -----------------------------
 	// 6. Write README
 	// -----------------------------
@@ -155,19 +197,6 @@ func main() {
 		fmt.Println("README writer error:", err)
 		os.Exit(1)
 	}
-
-	// -----------------------------
-	// 7. Write semantic comments
-	// -----------------------------
-	err = io.WriteCommentsMarkdown(
-		path,
-		bundle.Comments,
-	)
-	if err != nil {
-		fmt.Println("Comments writer error:", err)
-		os.Exit(1)
-	}
-
 	fmt.Println("✅ Documentation generated successfully.")
 }
 

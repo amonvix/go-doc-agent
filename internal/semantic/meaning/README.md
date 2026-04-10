@@ -1,0 +1,4 @@
+# Package meaning
+
+## output.go
+

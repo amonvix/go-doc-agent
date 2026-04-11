@@ -22,8 +22,10 @@ func DetectFunctionLayer(fn *semantic.Function) {
 	switch fn.Role {
 	case semantic.RoleHandler:
 		fn.Layer = semantic.LayerInterface
+		return
 	case semantic.RoleService, semantic.RoleValidator:
 		fn.Layer = semantic.LayerApplication
+		return
 	default:
 		if fn.IsPure && len(fn.Dependencies) == 0 {
 			fn.Layer = semantic.LayerDomain
